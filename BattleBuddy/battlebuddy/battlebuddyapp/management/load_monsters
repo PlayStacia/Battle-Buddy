@@ -1,0 +1,57 @@
+  
+from django.core.management.base import BaseCommand
+from battlebuddyapp.models import Monster
+import json
+
+
+class Command(baseCommand):
+
+
+    def handle(self, *args, **options):
+    monster.objects.all().delete()
+    with open('pokeapp/management/commands/monster.json') as file:
+        text = file.read()
+    data = json.loads(text)
+    monster_data = data['monster']
+    for monster in monster_data:
+
+
+        index = monster[' index '],
+        name = monster['name'],
+        size= monster['size'],
+        type= monster['type'],
+        subtype= monster['subtype'],
+        alignment= monster['alignment'],
+        armor_class = monster['armor_class'],
+        hit_points = monster['hit_points'],
+        hit_dice = monster['hit_dice'],
+        speed = monster['speed'],
+        strength = monster['strength'],
+        dexterity = monster['dexterity'],
+        constitution = monster['constitution'],
+        intelligence = monster['intelligence'],
+        wisdom = monster['wisdom'],
+        charisma = monster['charisma'],
+        proficiencies = monster['proficiencies'],
+        damage_vulnerabilities = monster['damage_vulnerabilities'],
+        damage_resistances = monster['damage_resistances'],
+        damage_immunities = monster['damage_immunities'],
+        condition_immunities = monster['condition_immunities'],
+        senses = monster['senses'],
+        languages = monster['languages'],
+        special_abilities = monster['special_abilities'],
+        actions = monster['actions'],
+        challenge_rating= monster['challenge_rating'],
+        url = monster['url'],
+        
+        status = monster['status' ],
+        notes = monster['notes'],
+        details = monster['details'],
+        
+    },
+       
+        monster = Monster(index=index, name=name, size=size, type=type, subtype=subtype, alignment=alignment, armor_class=armor_class, hit_points=hit_points, hit_dice=hit_dice, 
+        speed=speed, strength=strength, dexterity=dexterity, constitution=constitution, intelligence=intelligence, wisdom=wisdom, charisma=charisma, proficiencies=proficiencies,
+        damage_vulnerabilities = damage_vulnerabilities,damage_resistances=damage_resistances, damage_immunities=damage_immunities,condition_immunities=condition_immunities,
+        senses=senses, languages=languages, special_abilities =special_abilities, actions=actions, challenge_rating=challenge_rating, url = url, status=status, notes=notes, details=details,)
+        monster.save()
