@@ -86,7 +86,6 @@ class Participant(models.Model):
     faction = models.ForeignKey(Faction, on_delete=models.CASCADE, related_name="members" , null = True, blank = True)
     name = models.CharField(max_length=200)
     initiative=models.IntegerField()
-    initiativebonus=models.IntegerField()
     
     health = models.IntegerField()
     armour = models.IntegerField()
@@ -99,7 +98,6 @@ class Participant(models.Model):
 class Battle(models.Model):
     name = models.CharField(max_length=200)
     participants = models.ManyToManyField(Participant, related_name="battles")
-    
     def __str__(self):
         return self.name
 

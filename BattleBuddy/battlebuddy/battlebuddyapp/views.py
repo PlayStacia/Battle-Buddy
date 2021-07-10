@@ -50,7 +50,7 @@ def getbattles(request):
                 "hpchange": participant.hpchange,
                 "name": participant.name,
                 "faction": participant.faction.name,
-                "initiative":participant.statblock.initiative_bonus,
+                "initiative":participant.initiative,
                 "health": participant.statblock.hit_points,
                 "boons" :[bonus.name for bonus in participant.boons.all()],
                 "afflictions" : [aft.name for aft in participant.afflictions.all()],
