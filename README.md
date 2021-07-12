@@ -29,6 +29,7 @@ Battle buddy is suite of features designed to remove barriers to inclusive gamin
 
 - Status board:tracks health and status of combatants:
 
+#### Health monitoring
 
 #### Battle resolution
 - amount of xp 
@@ -52,55 +53,46 @@ Battle buddy is suite of features designed to remove barriers to inclusive gamin
  
  
  
- ## Data Model
+ ## Data Models
 
-
-  ##### monster: Monster is a  catch all term for enemy 
-  Encounter: exists of players place holders, allies and monsters and revelent information. 
-  
-
-  
+###Statblock
+ name
+ initiative_bonus
+ armor_class
+ hit_points
+ strength
+ dexterity
+ constitution
+ intelligence
+ wisdom
+ charisma
+ xp
+ damage_vulnerabilities
+ damdage_resistances
+ Damage_immunities
+ condition_immunities
+ attack_methods
+ special_abilities
+ notes
+ details
  
-##### monster: Monster is a  catch all term for enemy  
-index: '',
-name: '',
-size:"",
-type:"",
-subtype:"",
-alignment:"",
-armor_class:0,
-hit_points:0,
-hit_dice:0,
-speed:0,
-strength:0,
-dexterity:0,
-constitution:0,
-intelligence:0,
-wisdom:0,
-charisma:0,
-proficiencies:[],
-damage_vulnerabilities:[],
-damage_resistances:[],
-damage_immunities:[],
-condition_immunities:[],
-senses:[],
-languages:[],
-special_abilities:[],
-actions:[],
-challenge_rating: '0',
-url: '', 
-notes:"
-prefered_tactics:
+ ###Participant
+ id
+statblock
+name
+faction
 
- 
- 
-##### Encounter.
-battle_name:[],
-initive_order:[],
-combatants:[];
-initiave:[];
-turn:[];
-status tracking:;
+hp change
+initiative
+health
+boons
+afflictions
+
+
+###Battle
+id
+name
+Participant
 
 
   
