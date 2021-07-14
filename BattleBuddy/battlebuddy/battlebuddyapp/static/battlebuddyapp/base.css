@@ -1,0 +1,45 @@
+:root{
+
+
+
+    --basepanel: #2f2f4f;
+    --bevelshaddow: #191970;
+    --bevelhighlight: #dcdcdc;
+   
+
+    --baselight: #3cb371;
+    --lightwarm: #7cfc00;
+    --lightreflect: #7fffd4;
+
+    --button:#b8869b;
+}
+
+.basepannel{
+
+   background-color: var(--basepanel); 
+   border: 3px solid var(--bevelshaddow);
+ 
+  height:auto;
+  min-height:100%;
+  left:50%;
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:auto;
+  min-width:100%;
+}
+
+
+.glowtext{
+
+    color: #fff;
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #0fa,
+    0 0 82px #0fa,
+    0 0 92px #0fa,
+    0 0 102px #0fa,
+    0 0 151px #0fa;
+}

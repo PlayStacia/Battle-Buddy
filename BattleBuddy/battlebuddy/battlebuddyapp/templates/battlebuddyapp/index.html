@@ -9,8 +9,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Battle Buddy!</title>
-
-
+	<!-- battlebuddy\battlebuddyapp\templates\battlebuddyapp\base.css
+	battlebuddy\battlebuddyapp\templates\battlebuddyapp\index.html -->
+	<!-- {%load static%} -->
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{%static 'battlebuddy/style.css' %}" />
 	<style>
 		.battlebox {
 			display: flex;
@@ -61,6 +64,36 @@
 			margin-bottom: 10px;
 			padding-bottom: 30px;
 		}
+
+		.app {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.initiativebox {
+			display: flex;
+			flex-direction: column;
+			width: 20%;
+			height: 200px;
+			flex-grow: 1;
+			background-color: lightgrey;
+			border: 5px solid rgb(61, 36, 26);
+		}
+
+		.health {
+			display: flex;
+			flex-direction: column;
+			width: 20%;
+			height: 200px;
+			flex-grow: 1;
+			background-color: lightgrey;
+			border: 5px solid rgb(61, 36, 26);
+		}
+
+		.table {
+			display: flex;
+			flex-direction: column;
+		}
 	</style>
 </head>
 
@@ -69,64 +102,128 @@
 
 	<div id="app">
 
+		<div class="basepannel">
 
-		<div class="battlebox">
-			<button v-on:click="previousPage(battle)">previous</button>
-			<button v-on:click="openBattle(vBattle)" v-for="(vBattle, index) in battles">[[ vBattle.name]]</button>
-			<button v-on:click="nextPage(battle)">next</button>
-		</div>
 
-		<span v-if="battleopencheck">[[battleName]]</span>
-		<!-- <form>
-			{% csrf_token %} -->
-
-		<div class="box">
-
-			<div v-for=" participant in selectedBattle.participants">
-				<!-- [[participant]] -->
-
-				<div class="card">
-					[[participant.name]]
-					<div class="row">
-						Current Health [[participant.health]]
-					</div>
-					<div>change health for [[participant.name]] </div>
-					<input v-model="participant.hpchange" id="health" type="number" />
-					<!-- </div> -->
-				</div>
-				<div>change health for [[participant.name]] </div>
-				<button v-on:click.stop.prevent="changeHealth(participant)">Trigger changeHealth</button>
-				<button v-on:click.stop.prevent="setTurnorder(participant)">roll Initiative</button>
-
-				<input v-model="participant.initiative" id="initiative" type="number" />
-
-				[[participant.initiative]]
-				
+			<div v-if="battleopencheck == false" class="battlebox">
+				<button v-on:click="previousPage(battle)">previous</button>
+				<button v-on:click="openBattle(vBattle)" v-for="(vBattle, index) in battles">[[ vBattle.name]]</button>
+				<button v-on:click="nextPage(battle)">next</button>
 			</div>
-			<button v-on:click="sortParticipantsByInitiative">Sort partcipants</button>
+
+			<span v-if="battleopencheck">[[battleName]]</span>
+
+			<div class="box">
+
+				<div v-for=" participant in selectedBattle.participants">
+					<!-- [[participant]] -->
+
+					<div class="card">
+						<div class="health" v-if="turnordercheck == true">
+							[[participant.name]]
+
+							<div class="row">
+								Current Health [[participant.health]]
+							</div>
+
+							<input v-model="participant.hpchange" id="health" type="number" />
+
+							<button v-on:click.stop.prevent="changeHealth(participant)">Change HP</button>
+							<button v-on:click.stop.prevent="viewStats(participant)"> view stats </button>
+						</div>
+						<!-- </div> -->
+					</div>
+					<div class="initiativebox" v-if="turnordercheck == false">
+						[[participant.name]]
+						<button v-on:click.stop.prevent="setTurnorder(participant)">roll Initiative</button>
+
+						<input v-model="participant.initiative" id="initiative" type="number" />
+
+						[[participant.initiative]]
+
+					</div>
+				</div>
+				<button v-if="turnordercheck==false && battleopencheck"
+					v-on:click.stop.prevent="sortParticipantsByInitiative">Sort
+					partcipants</button>
+
+
+
+				<!-- squawk box -->
+				<div class="box">
+					<div class="box" v-if="turnordercheck && battleopencheck">
+						<div v-if="statscan">
+							<!-- [[chosenone]] -->
+							[[chosenone.armor_class]]
+							<table>[[chosenone.name]]
+
+								<tr>
+									<th>Armor Class</th>
+
+								</tr>
+								<tr>
+									<td><button>[[chosenone.statblock.armor_class]]</button></td>
+								</tr>
+								<tr>
+									<th>Damage Vulnerabilities</th>
+								</tr>
+								<td>
+									<div v-for="dv in chosenone.statblock.damage_vulnerabilities">[[dv]]</div>
+								</td>
+								<tr>
+									<th>Damage Resistance</th>
+								</tr>
+								<td>
+									<div v-for="dr in chosenone.statblock.damage_resistances">[[dr]]</div>
+								</td>
+								<tr>
+									<th>Damage Immunities</th>
+								</tr>
+								<td>
+									<div v-for="di in chosenone.statblock.damage_immunities">[[di]]</div>
+								</td>
+								<tr>
+									<th>Condition Immunities</th>
+								</tr>
+								<td>
+									<div v-for="ci in chosenone.statblock.condition_immunities">[[ci]]</div>
+								</td>
+								<tr>
+									<th>Boons</th>
+								</tr>
+								<tr>
+									<td>
+										<div v-for="boon in chosenone.boons">[[boon]]</div>
+									</td>
+									<th>Afflictions</th>
+								</tr>
+
+
+								<tr>
+									<td>
+										<div v-for="affliction in chosenone.afflictions">
+
+											<button v-on:click.stop.prevent="viewAffliction(affliction)">[[affliction]]
+												ok
+											</button>
+										</div>
+									</td>
+
+								</tr>
+
+							</table>
+							<div class="box">
+
+							</div>
+						</div>
+					</div>
+
+					<button v-on:click="saveBattle">Save</button>
+				</div>
+			</div>
+
+
 		</div>
-	</div>
-	</form>
-
-	<!-- <button v-on:click="openStats(participant)"
-			v-for=" (participant) in selectedBattle.participants">[[participant.name]]</button> -->
-
-	<!-- <div v-show="statscan">
-			<div>[[statblock.name]] </div>
-			<div>[[statblock.armor_class]]</div>
-			<div>[[statblock.hit_points]] </div>
-			<div>[[statblock.xp]]</div>
-			<div>[[statblock.damage_vulnerabilities]] </div>
-			<div>[[statblock.damage_resistances]]</div>
-			<div>[[statblock.damage_immunities]] </div>
-			<div>[[statblock.condition_immunities]]</div>
-			<div>[[statblock.attack_methods]] </div>
-			<div>[[statblock.special_abilities]]</div>
-			<div>[[statblock.notes]]</div>
-
-		</div> -->
-	<!-- [[ selectedBattle ]] -->
-	<button v-on:click="saveBattle">Save</button>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -141,7 +238,7 @@
 			data: {
 
 				battles: [],
-				statblock: {
+				chosenone: {
 					name: "",
 					armor_class: 0,
 					hit_points: 0,
@@ -153,7 +250,11 @@
 					attack_methods: '',
 					special_abilities: "",
 					notes: '',
+					boons: [],
+					afflictions: [],
 				},
+
+				turnordercheck: false,
 				agentcheck: false,
 				factions: [],
 				battleopencheck: false,
@@ -163,14 +264,43 @@
 				selectedBattle: {
 					participants: []
 				},
-				species: {},
 				statscan: false,
+
+				species: {},
 				hpchange: 0,
-				turnorder: []
+				turnorder: [],
+				chosenone: {},
+				selectAffliction: {},
+				round: 0,
+				turn: 0,
+				turnindex: 0,
 			},
 
 			methods: {
+				trackRound: function () {
+					this.round += 1
+				},
+				trackTurn: function () {
 
+					this.turnindex = partcipants[(turnindex + 1) % selectedBattle.participants.length]
+					console.log(turnindex)
+				},
+				viewAffliction: function (affliction) {
+					this.selectAffliction = affliction
+				},
+				viewStats: function (participant) {
+					this.statscan = true
+					this.chosenone = participant
+
+				},
+
+				viewSelector: function () {
+					if (this.viewStats) {
+
+						this.viewDetails = false
+					}
+
+				},
 				overrideInitiative: function (participant,) {
 					participant.initiative = this.participant.initiative
 
@@ -186,7 +316,6 @@
 
 					this.selectedBattle.participants[currentIndex].health = parseInt(this.selectedBattle.participants[currentIndex].health) + parseInt(this.selectedBattle.participants[currentIndex].hpchange)
 					this.hpchange = 0
-					// event.preventDefault()
 
 				},
 
@@ -195,14 +324,17 @@
 					this.page = 1
 					this.loadBattles()
 				},
-				
+
 				sortParticipantsByInitiative: function () {
-					alert("triggered!")
+
 					this.selectedBattle.participants.sort(function (b, a) {
 						return a.initiative - b.initiative
+
+
 					})
+					this.turnordercheck = true
 				},
-				
+
 				previousPage: function () {
 					if (this.page > 1) {
 						this.page -= 1
@@ -226,11 +358,13 @@
 					this.selectedBattle = vBattle
 					this.battleName = vBattle.name
 
+
 				},
 				openStats: function (participant) {
 					this.statblock = participant.statblock
 					this.statscan = true
 				},
+
 
 				loadBattles: function () {
 					axios({
@@ -253,7 +387,10 @@
 						// this.battle = response.data.battles
 					})
 				},
+
+
 				saveBattle: function () {
+					console.log("hello world")
 					axios({
 						method: 'post',
 						url: '{% url "battlebuddyapp:savebattle" %}',
