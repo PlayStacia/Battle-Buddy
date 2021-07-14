@@ -1,2 +1,2 @@
-web: cd battlebuddy && gunicorn battlebuddy.wsgi
-release: cd battlebuddy && python manage.py migrate
+web: cd BattleBuddy/battlebuddy && gunicorn battlebuddy.wsgi
+release: cd BattleBuddy/battlebuddy && python manage.py migrate
