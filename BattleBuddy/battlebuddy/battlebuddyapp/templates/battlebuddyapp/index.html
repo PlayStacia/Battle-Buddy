@@ -4,7 +4,6 @@
 <head>
 
 
-
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,32 +12,47 @@
 	battlebuddy\battlebuddyapp\templates\battlebuddyapp\index.html -->
 	<!-- {%load static%} -->
 	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{%static 'battlebuddy/style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{%static 'battlebuddyapp/style.css' %}" />
 	<style>
-	
+
 	</style>
 </head>
 
 <body>
 
-
 	<div id="app">
 
 		<div class="basepannel">
+			<header>
+				<h1>Battle Buddy</h1>
+			</header>
 
-
+			
 			<div v-if="battleopencheck == false" class="battlebox">
-				<button v-on:click="previousPage(battle)">previous</button>
-				<button v-on:click="openBattle(vBattle)" v-for="(vBattle, index) in battles">[[ vBattle.name]]</button>
-				<button v-on:click="nextPage(battle)">next</button>
+				<header class= "title"><h3>Choose your battle</h3> </header>
+				<div class="up">
+					<button v-on:click="previousPage(battle)">previous</button>
+				</div>
+				
+				<div class="wherebuttonsgo">
+					<div> 
+					<button class= "battlenamebutton" v-on:click="openBattle(vBattle)" v-for="(vBattle, index) in battles">[[
+						vBattle.name]]</button>
+					</div>
+				</div>
+				<div class="down">
+					<button class= "battlenamebutton" v-on:click="nextPage(battle)">next</button>
+				</div>
 			</div>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ phase one end ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div class = phasetwo>
 
-			<span v-if="battleopencheck">[[battleName]]</span>
+			
+<span class = header v-if="battleopencheck">[[battleName]]</span>
 
 			<div class="box">
 
 				<div v-for=" participant in selectedBattle.participants">
-					<!-- [[participant]] -->
 
 					<div class="card">
 						<div class="health" v-if="turnordercheck == true">
@@ -53,7 +67,6 @@
 							<button v-on:click.stop.prevent="changeHealth(participant)">Change HP</button>
 							<button v-on:click.stop.prevent="viewStats(participant)"> view stats </button>
 						</div>
-						<!-- </div> -->
 					</div>
 					<div class="initiativebox" v-if="turnordercheck == false">
 						[[participant.name]]
@@ -69,83 +82,81 @@
 					v-on:click.stop.prevent="sortParticipantsByInitiative">Sort
 					partcipants</button>
 
-
-
-				<!-- squawk box -->
-				<div class="box">
-					<div class="box" v-if="turnordercheck && battleopencheck">
-						<div v-if="statscan">
-							<!-- [[chosenone]] -->
-							[[chosenone.armor_class]]
-							<table>[[chosenone.name]]
-
-								<tr>
-									<th>Armor Class</th>
-
-								</tr>
-								<tr>
-									<td><button>[[chosenone.statblock.armor_class]]</button></td>
-								</tr>
-								<tr>
-									<th>Damage Vulnerabilities</th>
-								</tr>
-								<td>
-									<div v-for="dv in chosenone.statblock.damage_vulnerabilities">[[dv]]</div>
-								</td>
-								<tr>
-									<th>Damage Resistance</th>
-								</tr>
-								<td>
-									<div v-for="dr in chosenone.statblock.damage_resistances">[[dr]]</div>
-								</td>
-								<tr>
-									<th>Damage Immunities</th>
-								</tr>
-								<td>
-									<div v-for="di in chosenone.statblock.damage_immunities">[[di]]</div>
-								</td>
-								<tr>
-									<th>Condition Immunities</th>
-								</tr>
-								<td>
-									<div v-for="ci in chosenone.statblock.condition_immunities">[[ci]]</div>
-								</td>
-								<tr>
-									<th>Boons</th>
-								</tr>
-								<tr>
-									<td>
-										<div v-for="boon in chosenone.boons">[[boon]]</div>
-									</td>
-									<th>Afflictions</th>
-								</tr>
-
-
-								<tr>
-									<td>
-										<div v-for="affliction in chosenone.afflictions">
-
-											<button v-on:click.stop.prevent="viewAffliction(affliction)">[[affliction]]
-												ok
-											</button>
-										</div>
-									</td>
-
-								</tr>
-
-							</table>
-							<div class="box">
-
-							</div>
-						</div>
-					</div>
-
-					<button v-on:click="saveBattle">Save</button>
 				</div>
-			</div>
+
+			<!-- squawk box -->
+			<div class="box">
+				<div class="box" v-if="turnordercheck && battleopencheck">
+					<div v-if="statscan">
+						<!-- [[chosenone]] -->
+						[[chosenone.armor_class]]
+						<table>[[chosenone.name]]
+
+							<tr>
+								<th>Armor Class</th>
+
+							</tr>
+							<tr>
+								<td><button>[[chosenone.statblock.armor_class]]</button></td>
+							</tr>
+							<tr>
+								<th>Damage Vulnerabilities</th>
+							</tr>
+							<td>
+								<div v-for="dv in chosenone.statblock.damage_vulnerabilities">[[dv]]</div>
+							</td>
+							<tr>
+								<th>Damage Resistance</th>
+							</tr>
+							<td>
+								<div v-for="dr in chosenone.statblock.damage_resistances">[[dr]]</div>
+							</td>
+							<tr>
+								<th>Damage Immunities</th>
+							</tr>
+							<td>
+								<div v-for="di in chosenone.statblock.damage_immunities">[[di]]</div>
+							</td>
+							<tr>
+								<th>Condition Immunities</th>
+							</tr>
+							<td>
+								<div v-for="ci in chosenone.statblock.condition_immunities">[[ci]]</div>
+							</td>
+							<tr>
+								<th>Boons</th>
+							</tr>
+							<tr>
+								<td>
+									<div v-for="boon in chosenone.boons">[[boon]]</div>
+								</td>
+								<th>Afflictions</th>
+							</tr>
 
 
+							<tr>
+								<td>
+									<div v-for="affliction in chosenone.afflictions">
+
+										<button v-on:click.stop.prevent="viewAffliction(affliction)">[[affliction]]
+											ok
+										</button>
+									</div>
+								</td>
+
+							</tr>
+
+						</table>
+						
+					</div>
+				<!-- </div>
+
+				<button v-on:click="saveBattle">Save</button>
+			</div> -->
 		</div>
+
+
+	</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

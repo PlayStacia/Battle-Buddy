@@ -1,6 +1,5 @@
-body{
-  background-color: #b8869b;
-}
+
+
 :root{
 
     --basepanel: #2f2f4f;
@@ -15,25 +14,17 @@ body{
     --button:#b8869b;
 }
 
-.basepannel{
 
-   background-color: var(--basepanel); 
-   border: 3px solid var(--bevelshaddow);
- 
-  height:auto;
-  min-height:100%;
-  left:50%;
-  position:absolute;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:auto;
-  min-width:100%;
+.basepannel> div {
+  background-color: #b8869b;
 }
 
 
-.glowtext{
 
-    color: #fff;
+
+header{
+  grid-area: header;
+  color: #fff;
   text-shadow:
     0 0 7px #fff,
     0 0 10px #fff,
@@ -43,4 +34,153 @@ body{
     0 0 92px #0fa,
     0 0 102px #0fa,
     0 0 151px #0fa;
+    flex-grow: 1;
+    border: 3px solid rgb(216, 19, 150);
+   
 }
+
+
+.basepannel{
+  display: grid;
+   background-color: var(--basepanel); 
+   border: 3px solid var(--bevelshaddow);
+   height:auto;
+  min-height:100%;
+  left:50%;
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:auto;
+  min-width:100%;
+
+  grid-template-columns: 10% 15%  auto  15% 10% ;
+  grid-template-rows: 10% auto 10%;
+  grid-template-areas:
+  ". . . . header"
+  ". s1 main s2 . "
+  ". foot foot foot . ";
+
+}
+.glowtext{
+
+  color: rgb(67, 187, 97);
+  text-shadow:
+    0 0 7px rgb(255, 255, 255),
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #0fa,
+    0 0 82px #0fa,
+    0 0 92px #0fa,
+    0 0 102px #0fa,
+    0 0 120px #0fa;
+}
+.battlenamebutton{
+  min-height: 30%;
+}
+.battlebox {
+  display: grid;
+  grid-area: main;
+  width:auto;
+  min-width:100%;
+
+  grid-template-columns: 10% 15%  auto  15% 10% ;
+  grid-template-rows: 10% 10% 70% 10%;
+  grid-template-areas:
+  ". . t . ."
+  ". . up . ."
+  ". bb bb bb . "
+  ". . down . .";
+}
+
+.wherebuttonsgo {
+  grid-area: bb;
+  
+}
+.title{
+  grid-area: t;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+.wherebuttonsgo > div{
+  display:flex;
+  flex-direction: column ;
+  min-height: 100%;
+}
+.wherebuttonsgo button{
+  margin-bottom: 40px ;
+  /* min-height: 150px; */
+  flex-grow: 1;
+}
+.up{
+  grid-area: up;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+.down {
+  grid-area: down;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+
+
+
+
+/* .battlenamebutton {
+  width:100%;
+  display:block;
+  height: 100px;
+  border: 1px solid rgb(70, 43, 226);
+  box-shadow: 10px 10px 5px grey;
+  margin: 10px;
+
+} */
+
+.box {
+  border: 5px solid black;
+  margin-bottom: 10px;
+  padding-bottom: 30px;
+}
+
+/* .row {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  border: 3px solid black;
+  box-shadow: 2px 2px 5px grey;
+  padding-bottom: 5px;
+}
+
+.card {
+  margin-bottom: 10px;
+  padding-bottom: 30px;
+} */
+
+
+
+/* .initiativebox {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 200px;
+  flex-grow: 1;
+  background-color: lightgrey;
+  border: 5px solid rgb(61, 36, 26);
+} */
+
+/* .health {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 200px;
+  flex-grow: 1;
+  background-color: lightgrey;
+  border: 5px solid rgb(61, 36, 26);
+} */
+/* 
+.table {
+  display: flex;
+  flex-direction: column;
+} */
