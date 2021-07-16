@@ -27,323 +27,254 @@
 				<h1>Battle Buddy</h1>
 			</header>
 
-			
+
 			<div v-if="battleopencheck == false" class="battlebox">
-				<header class= "title"><h3>Choose your battle</h3> </header>
+				<header class="title">
+					<h3>Choose your battle</h3>
+				</header>
 				<div class="up">
 					<button v-on:click="previousPage(battle)">previous</button>
 				</div>
-				
+
 				<div class="wherebuttonsgo">
-					<div> 
-					<button class= "battlenamebutton" v-on:click="openBattle(vBattle)" v-for="(vBattle, index) in battles">[[
-						vBattle.name]]</button>
+					<div>
+						<button class="battlenamebutton" v-on:click="openBattle(vBattle)"
+							v-for="(vBattle, index) in battles">[[vBattle.name]]</button>
 					</div>
 				</div>
 				<div class="down">
-					<button class= "battlenamebutton" v-on:click="nextPage(battle)">next</button>
+					<button class="battlenamebutton" v-on:click="nextPage(battle)">next</button>
 				</div>
 			</div>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ phase one end ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class = phasetwo>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ phase one end ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<div v-if="battleopencheck && sorted == false" class="order">
 
-			
-<span class = header v-if="battleopencheck">[[battleName]]</span>
 
-			<div class="box">
 
-				<div v-for=" participant in selectedBattle.participants">
+				<div class="title">[[battleName]]</div>
 
-					<div class="card">
-						<div class="health" v-if="turnordercheck == true">
-							[[participant.name]]
+				<div class="sortbox">
+					<div class="card" v-for=" participant in selectedBattle.participants">
 
-							<div class="row">
-								Current Health [[participant.health]]
-							</div>
-
-							<input v-model="participant.hpchange" id="health" type="number" />
-
-							<button v-on:click.stop.prevent="changeHealth(participant)">Change HP</button>
-							<button v-on:click.stop.prevent="viewStats(participant)"> view stats </button>
+						<div>[[participant.name]]</div>
+						<div class="cardscore">
+							<input v-model="participant.initiative" id="initiative" type="number" />
+						</div>
+						<div class="dice">
+							<button v-on:click.stop.prevent="rollInitiative(participant)">roll Initiative</button>
 						</div>
 					</div>
-					<div class="initiativebox" v-if="turnordercheck == false">
-						[[participant.name]]
-						<button v-on:click.stop.prevent="setTurnorder(participant)">roll Initiative</button>
-
-						<input v-model="participant.initiative" id="initiative" type="number" />
-
-						[[participant.initiative]]
-
-					</div>
+					<button class="sb" v-if="sorted==false && battleopencheck"
+						v-on:click.stop.prevent="sortParticipantsByInitiative">Sort
+						partcipants</button>
 				</div>
-				<button v-if="turnordercheck==false && battleopencheck"
-					v-on:click.stop.prevent="sortParticipantsByInitiative">Sort
-					partcipants</button>
+			</div>
 
-				</div>
-
-			<!-- squawk box -->
-			<div class="box">
-				<div class="box" v-if="turnordercheck && battleopencheck">
-					<div v-if="statscan">
-						<!-- [[chosenone]] -->
-						[[chosenone.armor_class]]
-						<table>[[chosenone.name]]
-
-							<tr>
-								<th>Armor Class</th>
-
-							</tr>
-							<tr>
-								<td><button>[[chosenone.statblock.armor_class]]</button></td>
-							</tr>
-							<tr>
-								<th>Damage Vulnerabilities</th>
-							</tr>
-							<td>
-								<div v-for="dv in chosenone.statblock.damage_vulnerabilities">[[dv]]</div>
-							</td>
-							<tr>
-								<th>Damage Resistance</th>
-							</tr>
-							<td>
-								<div v-for="dr in chosenone.statblock.damage_resistances">[[dr]]</div>
-							</td>
-							<tr>
-								<th>Damage Immunities</th>
-							</tr>
-							<td>
-								<div v-for="di in chosenone.statblock.damage_immunities">[[di]]</div>
-							</td>
-							<tr>
-								<th>Condition Immunities</th>
-							</tr>
-							<td>
-								<div v-for="ci in chosenone.statblock.condition_immunities">[[ci]]</div>
-							</td>
-							<tr>
-								<th>Boons</th>
-							</tr>
-							<tr>
-								<td>
-									<div v-for="boon in chosenone.boons">[[boon]]</div>
-								</td>
-								<th>Afflictions</th>
-							</tr>
-
-
-							<tr>
-								<td>
-									<div v-for="affliction in chosenone.afflictions">
-
-										<button v-on:click.stop.prevent="viewAffliction(affliction)">[[affliction]]
-											ok
-										</button>
-									</div>
-								</td>
-
-							</tr>
-
-						</table>
-						
-					</div>
-				<!-- </div>
-
-				<button v-on:click="saveBattle">Save</button>
-			</div> -->
 		</div>
+		<!-- ~~~~~~~~~~~~~~~~~~~~end phase two~~~~~ grid transistion~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+	
 
+			<div v-if="sorted" class="turnbox" >
+				<div class="card" v-for="participant in selectedBattle.participants">
+					<div> [[participant.name]]</div>
+					<div>Current Health [[participant.health]]</div>
+				</div>
+			</div>
+			<!-- VVVVVVVV        end of p3       VVVVVVVVV -->
+		</div>
 	</div>
-	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-	<script>
+</body>
 
-		let app = new Vue({
-			// query selector of the html element representing the app
-			el: '#app',
-			delimiters: ['[[', ']]'],
+<input v-model="participant.hpchange" id="health" type="number" />
 
-			data: {
+<button v-on:click.stop.prevent="changeHealth(participant)">Change HP</button>
+<button v-on:click.stop.prevent="viewStats(participant)"> view stats </button>
+</div>
 
-				battles: [],
-				chosenone: {
-					name: "",
-					armor_class: 0,
-					hit_points: 0,
-					xp: 0,
-					damage_vulnerabilities: [],
-					damage_resistances: [],
-					damage_immunities: [],
-					condition_immunities: [],
-					attack_methods: '',
-					special_abilities: "",
-					notes: '',
-					boons: [],
-					afflictions: [],
-				},
 
-				turnordercheck: false,
-				agentcheck: false,
-				factions: [],
-				battleopencheck: false,
-				search: '',
-				page: 1,
-				total_pages: 10,
-				selectedBattle: {
-					participants: []
-				},
-				statscan: false,
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
 
-				species: {},
-				hpchange: 0,
-				turnorder: [],
-				chosenone: {},
-				selectAffliction: {},
-				round: 0,
-				turn: 0,
-				turnindex: 0,
+	let app = new Vue({
+		// query selector of the html element representing the app
+		el: '#app',
+		delimiters: ['[[', ']]'],
+
+		data: {
+
+			battles: [],
+			chosenone: {
+				name: "",
+				armor_class: 0,
+				hit_points: 0,
+				xp: 0,
+				damage_vulnerabilities: [],
+				damage_resistances: [],
+				damage_immunities: [],
+				condition_immunities: [],
+				attack_methods: '',
+				special_abilities: "",
+				notes: '',
+				boons: [],
+				afflictions: [],
 			},
 
-			methods: {
-				trackRound: function () {
-					this.round += 1
-				},
-				trackTurn: function () {
+			turnordercheck: false,
+			agentcheck: false,
+			factions: [],
+			battleopencheck: false,
+			search: '',
+			page: 1,
+			total_pages: 10,
+			selectedBattle: {
+				participants: []
+			},
+			statscan: false,
 
-					this.turnindex = partcipants[(turnindex + 1) % selectedBattle.participants.length]
-					console.log(turnindex)
-				},
-				viewAffliction: function (affliction) {
-					this.selectAffliction = affliction
-				},
-				viewStats: function (participant) {
-					this.statscan = true
-					this.chosenone = participant
+			species: {},
+			hpchange: 0,
+			turnorder: [],
+			chosenone: {},
+			selectAffliction: {},
+			round: 0,
+			turn: 0,
+			turnindex: 0,
+			sorted: false,
+		},
 
-				},
-
-				viewSelector: function () {
-					if (this.viewStats) {
-
-						this.viewDetails = false
-					}
-
-				},
-				overrideInitiative: function (participant,) {
-					participant.initiative = this.participant.initiative
-
-				},
-				setTurnorder: function (participant) {
-					let roll = (Math.floor(Math.random() * 20) + 1)
-
-					participant.initiative = roll + participant.statblock.initiative_bonus
-
-				},
-				changeHealth: function (participant) {
-					let currentIndex = this.selectedBattle.participants.indexOf(participant);
-
-					this.selectedBattle.participants[currentIndex].health = parseInt(this.selectedBattle.participants[currentIndex].health) + parseInt(this.selectedBattle.participants[currentIndex].hpchange)
-					this.hpchange = 0
-
-				},
+		methods: {
 
 
-				firstPage: function () {
-					this.page = 1
+			// 	trackRound: function () {
+			// 		this.round += 1
+			// 	},
+			// 	trackTurn: function () {
+
+			// 		this.turnindex = partcipants[(turnindex + 1) % selectedBattle.participants.length]
+			// 		console.log(turnindex)
+			// 	},
+			viewAffliction: function (affliction) {
+				this.selectAffliction = affliction
+			},
+			viewStats: function (participant) {
+				this.statscan = true
+				this.chosenone = participant
+			},
+
+
+			rollInitiative: function (participant) {
+				let roll = (Math.floor(Math.random() * 20) + 1)
+
+				participant.initiative = roll + participant.statblock.initiative_bonus
+
+			},
+
+			sortParticipantsByInitiative: function () {
+
+				this.selectedBattle.participants.sort(function (b, a) {
+					return a.initiative - b.initiative
+
+				})
+				this.sorted = true
+
+			},
+
+			changeHealth: function (participant) {
+				let currentIndex = this.selectedBattle.participants.indexOf(participant);
+
+				this.selectedBattle.participants[currentIndex].health = parseInt(this.selectedBattle.participants[currentIndex].health) + parseInt(this.selectedBattle.participants[currentIndex].hpchange)
+				this.hpchange = 0
+
+			},
+
+
+			firstPage: function () {
+				this.page = 1
+				this.loadBattles()
+			},
+
+
+
+			previousPage: function () {
+				if (this.page > 1) {
+					this.page -= 1
 					this.loadBattles()
-				},
-
-				sortParticipantsByInitiative: function () {
-
-					this.selectedBattle.participants.sort(function (b, a) {
-						return a.initiative - b.initiative
-
-
-					})
-					this.turnordercheck = true
-				},
-
-				previousPage: function () {
-					if (this.page > 1) {
-						this.page -= 1
-						this.loadBattles()
-					}
-				},
-				nextPage: function () {
-					if (this.page < this.total_pages) {
-						this.page += 1
-						this.loadBattles()
-					}
-				},
-				lastPage: function () {
-					this.page = this.total_pages
-					this.loadBattles()
-				},
-
-
-				openBattle: function (vBattle) {
-					this.battleopencheck = true
-					this.selectedBattle = vBattle
-					this.battleName = vBattle.name
-
-
-				},
-				openStats: function (participant) {
-					this.statblock = participant.statblock
-					this.statscan = true
-				},
-
-
-				loadBattles: function () {
-					axios({
-						method: 'get',
-						url: '{% url "battlebuddyapp:getbattles" %}',
-						params: {
-							search: this.search,
-							page: this.page,
-							limit: 3
-						}
-
-					}).then(response => {
-						// console.log(response.data.battles)
-						let data = response.data
-						this.battles = data.battles
-						// console.log(this.participants)
-						this.total_pages = response.data.total_pages
-
-
-						// this.battle = response.data.battles
-					})
-				},
-
-
-				saveBattle: function () {
-					console.log("hello world")
-					axios({
-						method: 'post',
-						url: '{% url "battlebuddyapp:savebattle" %}',
-						data: this.selectedBattle,
-						headers: {
-							'X-CSRFToken': '{{ csrf_token }}'
-						}
-					}).then(response => {
-						// console.log(response.data)
-					})
 				}
 			},
-
-			created: function () {
-
+			nextPage: function () {
+				if (this.page < this.total_pages) {
+					this.page += 1
+					this.loadBattles()
+				}
+			},
+			lastPage: function () {
+				this.page = this.total_pages
 				this.loadBattles()
+			},
 
+
+			openBattle: function (vBattle) {
+				this.battleopencheck = true
+				this.selectedBattle = vBattle
+				this.battleName = vBattle.name
+
+
+			},
+			openStats: function (participant) {
+				this.statblock = participant.statblock
+				this.statscan = true
+			},
+
+
+			loadBattles: function () {
+				axios({
+					method: 'get',
+					url: '{% url "battlebuddyapp:getbattles" %}',
+					params: {
+						search: this.search,
+						page: this.page,
+						limit: 3
+					}
+
+				}).then(response => {
+					// console.log(response.data.battles)
+					let data = response.data
+					this.battles = data.battles
+					// console.log(this.participants)
+					this.total_pages = response.data.total_pages
+
+
+					// this.battle = response.data.battles
+				})
+			},
+
+
+			saveBattle: function () {
+				console.log("hello world")
+				axios({
+					method: 'post',
+					url: '{% url "battlebuddyapp:savebattle" %}',
+					data: this.selectedBattle,
+					headers: {
+						'X-CSRFToken': '{{ csrf_token }}'
+					}
+				}).then(response => {
+					// console.log(response.data)
+				})
 			}
-		})
-	</script>
+		},
+
+		created: function () {
+
+			this.loadBattles()
+
+		}
+	})
+</script>
 </body>
 
 </html>
